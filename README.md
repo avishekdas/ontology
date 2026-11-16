@@ -82,3 +82,22 @@ Expected: 98 foreign keys in the catalog, 59 of them cross-schema.
 
 After switching chat models: `docker compose up -d`, then **Reset** in Settings → Semantic
 Compilation (no re-ingest needed).
+
+## Example queries (custom analyses)
+
+Example queries raise accuracy a lot. [`examples/custom_analyses.json`](examples/custom_analyses.json)
+holds the ones used here, in the same format as `auto-ontology-eval/datasets/*/custom_analyses.json`.
+They live in the app's database, so add each one after setup: **Analysis → Create New SQL
+Analysis**, paste name, description and SQL, **Validate SQL**, **Save**. Each is embedded right
+away; no recompile needed.
+
+Test question: *"Which 5 customers had the highest total invoiced amount in 2015, and which city
+do they deliver to?"* Correct top 5: Laszlo Gardenier (Marion Hill), Knut Svensson (Madison Park),
+Wingtip Toys (Montoya, NM), Svetlana Todorovic (Venersborg), Wingtip Toys (Bokeelia, FL).
+
+| Nemotron (NVIDIA default) | Amount | City | Top 5 |
+|---|---|---|---|
+| Without example | summed item counts | `postalcityid` | wrong |
+| With example | `SUM(extendedprice)` | `deliverycityid` | correct |
+
+Both runs took about 5 minutes.

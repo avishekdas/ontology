@@ -1,0 +1,7 @@
+[
+  {
+    "name": "Customer Invoiced Amount by Delivery City and Year",
+    "description": "Total invoiced amount (money, not item counts) per customer per year, with the city the customer delivers to. Invoiced amount = SUM(sales.invoicelines.extendedprice) joined through sales.invoices. Delivery city = sales.customers.deliverycityid -> application.cities (not postalcityid). Filter years on sales.invoices.invoicedate.",
+    "sql": "SELECT c.customername, ci.cityname AS delivery_city, EXTRACT(YEAR FROM i.invoicedate) AS invoice_year, SUM(il.extendedprice) AS total_invoiced_amount FROM sales.invoices AS i JOIN sales.invoicelines AS il ON il.invoiceid = i.invoiceid JOIN sales.customers AS c ON c.customerid = i.customerid JOIN application.cities AS ci ON ci.cityid = c.deliverycityid GROUP BY c.customername, ci.cityname, EXTRACT(YEAR FROM i.invoicedate) ORDER BY total_invoiced_amount DESC"
+  }
+]
