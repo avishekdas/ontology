@@ -1,0 +1,10 @@
+# Gym builds this server its own venv from this file.
+#
+# This arm imports Auto Ontology in-process. Installing the parent project
+# editable also installs its pinned Auto Ontology Git dependency.
+-e ../..
+
+# Listed explicitly: Gym decides whether to install nemo-gym by looking for a
+# pyproject.toml two levels up, finds this repo's, and wrongly concludes it is
+# an editable Gym checkout.
+nemo-gym==0.7.0
